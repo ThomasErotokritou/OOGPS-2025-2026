@@ -1,0 +1,36 @@
+το αυτοκινητο -> @
+empty cell -> .
+Outisde Bounds -> X
+Red Light ->R
+Yellow Light -> Y 
+Green Light -> G 
+Stop Sign -> S 
+Moving Bike -> B 
+Moving Car -> C 
+Parked Car -> P 
+Unknown/Other Object -> ?
+
+
+Χρονικη Διαρκεια Φαναριων:
+Κοκκινο -> 4 ticks
+Κιτρινο -> 2 ticks
+Πρασινο -> 8 ticks
+Σημειωση (σελ 3 περισσοτερες λεπτομερειες), Δικαιουμαστε να ξεκινουμε απο κοκκινο για απλοποιηση αλλα ιδανικα θα θελουμε να ξεκινα καπου τυχαια
+
+
+Κινουμενα Αντικειμενα:
+Δεν πρεπει να ειναι εξυπνα δηλαδη εχουν σταθερη ταχυτητα και σταθερο direction πχ οταν αλλαξει φαναρι ή αν βρουν stop sign
+Οταν φευγουν εκτος εμβελειας χαρτη εξαφανιζονται.
+
+
+
+
+Default Ορια (δικαιουμαστε να τα αλλαξουμε):
+κοσμος 40*40
+Moving Cars: 3
+Moving Bikes: 4
+Parked Cars: 3
+Stop signs: 2
+Traffic lights:2
+MAximum simulation ticks: 10000
+MInimum confidence cutoff:40
