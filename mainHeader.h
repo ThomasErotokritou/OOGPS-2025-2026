@@ -4,7 +4,6 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-#include <ctime>
 
 using namespace std;
 
@@ -34,23 +33,15 @@ class Grid;
 
 class WorldObject{
 protected:
-    string id;
-    int counter=0;
+    int id=0;
     Position pos;
     char glyph;
-    int ticks;
 public:
-    WorldObject(const string& i,int c, const Position& p, const char& g, int t): id(i), counter(c), pos(p),glyph(g),ticks(t){}
+    WorldObject(const Position& p, const char& g): pos(p),glyph(g){}
     virtual ~WorldObject()=default;
 
     virtual string getType() const=0;
-    virtual void update(int tick, Grid& gr) const=0;
-
-    void setId(const string& i){id=i;}
-    string getId()const {return id;}
-
-    void setCounter(int c){counter=c;}
-    int getCounter() {return counter;}
+//    virtual void update(int tick, Grid& gr) const=
 
     void setPosition(const Position& p){pos=p;}
     Position getPosition()const {return pos;}
@@ -58,46 +49,65 @@ public:
     void setGlyph(const char& g){glyph=g;}
     char getGlyph()const {return glyph;}
 
-    void setTicks(int t){ticks=t;}
-    int getGlyph() {return glyph;}
 };
 
-class MovingObject: public WorldObject{
+class MovingObjects: public WorldObject{
+private:
+    Position direction;
+    double speed;
+public:
+     MovingObjects(const Position& p, const char& g, const Position& d, const double& s): pos(p), glyph(g), direction(d), speed(s) {cout<<"[+OBJECT:"+(id++)+"]"<<endl;}
+    ~MovingObjects(){cout<<"[-OBJECT:"+(id--)+"]"<<endl;}
+
+    void setDirection(const Position& d){direction=d;}
+    Position getDirection()const {return direction;}
+
+    void setSpeed(const double& s){speed=s;}
+    double getSpeed(){return speed;}
+
 };
 
-class StaticObject: public WorldObject{
+class StaticObjects: public WorldObject{
+
+public:
+    StaticObjects(const Position& p, const char& g): pos(p),glyph(g){}
+    virtual ~StaticObjects()=default;
 };
 
-class StationaryVehicle: public StaticObject{
+class StationaryVehicles: public StaticObject{
+
+public:
+    StationaryVehicles(const Position& p, const char& g): pos(p),glyph(g){cout<<"[+VEHICLE:"+(id++)+"]"<<endl;}
+    ~StationaryVehicles(){cout<<"[-VEHICLE:"+(id--)+"]"<<endl;}
 };
 
-class TrafficSign: public StaticObject{
+class TrafficSigns: public StaticObject{
+private:
+    string info;//info είναι το κείμενο, η πληροφορία που μεταδίδουν οι πινακίδες
+public:
+
+    TrafficSigns(const Position& p, const char& g, const string& info): pos(p),glyph(g), info (i){cout<<"[+SIGN:"+(id++)+"]"<<endl;}
+    ~TrafficSigns(){cout<<"[-SIGN:"+(id--)+"]"<<endl;}
+
+    void setInfo(const string& i){info=i;}
+    string getInfo(){return info;}
 };
 
 class TrafficLights: public StaticObject{
 private:
     string color;
+public:
+     TrafficLights(const Position& p, const char& g, const string& c): pos(p),glyph(g), color (c){cout<<"[+LIGHT:"+(id++)+"]"<<endl;}
+    ~TrafficLights(){cout<<"[-LIGHT:"+(id--)+"]"<<endl;}
+
+    void setColor(string c){
+        while (color!="RED" && color !="YELLOW" && color !="GREEN"){
+            cout<<"Incorrect color, it can be RED, YELLOW or GREEN. Try again!"<<endl;
+            cin>>c;
+        }
+        color=c;
+    }
+    string getColor(){return color;}
 };
 
 #endif // MAINHEADER_H_INCLUDED
-/*
-void printHelp()
-{
-cout << " Self−Driving Car Simulation " << endl ;
-cout << " Usage : " << endl ;
-cout << " −− seed <n> Random seed (default: current time)" << endl ;
-cout << " −−dimX <n> World width (default: 40)" << endl ;
-cout << " −−dimY <n> World height (default: 40)" << endl ;
-cout << " −−numMovingCars <n> Number of moving cars (default: 3)" << endl ;
-cout << " −−numMovingBikes <n> Number of moving bikes (default: 4)" << endl ;
-cout << " −−numParkedCars <n> Number of parked cars (default: 5)" << endl ;
-cout << " −− numStopSigns <n> Number of stop signs (default: 2)" << endl ;
-cout << " −− numTrafficLights <n> Number of traffic lights (default: 2)" << endl ;
-cout << " −− simulationTicks <n> Maximum simulation ticks (default: 100)" << endl ;
-cout << " −− minConfidenceThreshold <n> Minimum confidence cutoff (default: 40)" << endl ;
-cout << " −− gps <x1 > <y1 > [ x2 y2 . . . ] GPS target coordinates (required)" << endl ;
-cout << " −− help     Show this help message" << endl << endl ;
-cout << " Example usage: " << endl ;
-cout << " ./oopproj_2025 −− seed 12 −−dimY 50 −− gps 10 20 32 15 " << endl ;
-}
-*/
